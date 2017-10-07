@@ -2,8 +2,10 @@ from flask import Flask, request
 from structs import *
 from map_utils import GlobalMap
 from ai_utils import a_star
+from planner import *
 import json
 import numpy
+
 
 app = Flask(__name__)
 
@@ -149,6 +151,9 @@ def bot():
     else:    
         next_pos = find_next_pos(player, player.HouseLocation)
         action = create_move_action(next_pos)
+
+    best_plan = get_best_plan()
+    print best_plan
             
     # return decision
     return action
