@@ -112,7 +112,7 @@ def bot():
     y = pos["Y"]
     house = p["HouseLocation"]
     player = Player(p["Health"], p["MaxHealth"], Point(x,y),
-                    Point(house["X"], house["Y"]), 0,
+                    Point(house["X"], house["Y"]), p["Score"],
                     p["CarriedResources"], p["CarryingCapacity"])
 
     # Map
@@ -121,15 +121,14 @@ def bot():
 
     otherPlayers = []
 
-    for player_dict in map_json_dict["OtherPlayers"]:
-        for player_name in player_dict.keys():
-            player_info = player_dict[player_name]
-            p_pos = player_info["Position"]
-            player_info = PlayerInfo(player_info["Health"],
-                                     player_info["MaxHealth"],
-                                     Point(p_pos["X"], p_pos["Y"]))
+    for player in map_json_dict["OtherPlayers"]:
+        player_info = player["Value"]
+        p_pos = player_info["Position"]
+        player_info = PlayerInfo(player_info["Health"],
+                                    player_info["MaxHealth"],
+                                    Point(p_pos["X"], p_pos["Y"]))
 
-            otherPlayers.append({player_name: player_info })
+        otherPlayers.append(player_info)
 
     global_map.update_grid(deserialized_map)
     # print str(global_map)
@@ -165,4 +164,4 @@ def reponse():
 if __name__ == "__main__":
     global global_map
     global_map = GlobalMap()
-    app.run(host="0.0.0.0", port=8080)
+    app.run(host="0.0.0.0", port=8080, debug=True)
