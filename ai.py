@@ -138,8 +138,10 @@ def bot():
 
     # print str(player)
 
+    best_plan = get_best_plan(global_map, player, otherPlayers)
+
     action = None
-    if needs_resource(player):
+    if best_plan == 'collect':
         goal = find_closest_resource(deserialized_map, player)
         # print 'Target: ' + str(goal)
         if not has_reached_goal(player, goal, 1):
@@ -148,11 +150,11 @@ def bot():
             action = create_move_action(next_pos)
         else:
             action = create_collect_action(goal)
-    else:    
+    elif best_plan == 'go_to_house':    
         next_pos = find_next_pos(player, player.HouseLocation)
         action = create_move_action(next_pos)
 
-    best_plan = get_best_plan()
+    
     print best_plan
             
     # return decision
