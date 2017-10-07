@@ -65,7 +65,7 @@ class Tile(object):
 class Player(object):
 
     def __init__(self, health, maxHealth, position, houseLocation, score, carriedRessources,
-                 carryingCapacity=1000):
+                 carryingCapacity, attackPower, defence, totalResources):
         self.Health = health
         self.MaxHealth = maxHealth
         self.Position = position
@@ -73,9 +73,12 @@ class Player(object):
         self.Score = score
         self.CarriedRessources = carriedRessources
         self.CarryingCapacity = carryingCapacity
+        self.AttackPower = attackPower
+        self.Defence = defence
+        self.TotalResources = totalResources
 
     def __str__(self):
-        return 'Position: {0} Carried Resources: {1} Carrying Capacity: {2} House Location: {3}'.format(self.Position, self.CarriedRessources,self.CarryingCapacity, self.HouseLocation) 
+        return 'Position: {0} Carried Resources: {1} Carrying Capacity: {2} House Location: {3} Attack: {4} Defense: {5} TotalResources: {6}'.format(self.Position, self.CarriedRessources,self.CarryingCapacity, self.HouseLocation, self.AttackPower, self.Defence, self.TotalResources) 
 
 class PlayerInfo(object):
 
