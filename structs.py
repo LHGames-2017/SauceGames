@@ -13,7 +13,7 @@ class TileType():
 
 
 class TileContent():
-    Empty, Resource, House, Player, Wall, Lava, Shop = range(7)
+    Empty, Wall, House, Lava, Resource, Shop, Player = range(7)
 
 
 class Point(object):
@@ -34,7 +34,8 @@ class Point(object):
         return "{{{0}, {1}}}".format(self.X, self.Y)
 
     # Distance between two Points
-    def Distance(self, p1, p2):
+    @staticmethod
+    def Distance(p1, p2):
         delta_x = p1.X - p2.X
         delta_y = p1.Y - p2.Y
         return math.sqrt(math.pow(delta_x, 2) + math.pow(delta_y, 2))
@@ -56,6 +57,10 @@ class Tile(object):
         self.X = x
         self.Y = y
 
+    def __str__(self):
+        #'x: ' + str(self.X) + ' y: ' + str(self.Y) + ' content: ' +
+        return str(self.Content) if self.Content is not None else ''
+
 
 class Player(object):
 
@@ -69,6 +74,8 @@ class Player(object):
         self.CarriedRessources = carriedRessources
         self.CarryingCapacity = carryingCapacity
 
+    def __str__(self):
+        return 'Position: {0} Carried Resources: {1} Carrying Capacity: {2} House Location: {3}'.format(self.Position, self.CarriedRessources,self.CarryingCapacity, self.HouseLocation) 
 
 class PlayerInfo(object):
 
@@ -81,4 +88,4 @@ class ActionContent(object):
 
     def __init__(self, action_name, content):
         self.ActionName = action_name
-        self.Content = {}
+        self.Content = str(content)
