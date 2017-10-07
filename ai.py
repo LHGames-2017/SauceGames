@@ -121,8 +121,8 @@ def bot():
 
     otherPlayers = []
 
-    for player in map_json_dict["OtherPlayers"]:
-        player_info = player["Value"]
+    for players in map_json_dict["OtherPlayers"]:
+        player_info = players["Value"]
         p_pos = player_info["Position"]
         player_info = PlayerInfo(player_info["Health"],
                                     player_info["MaxHealth"],
