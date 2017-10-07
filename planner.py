@@ -1,3 +1,4 @@
+import time
 from goapy import World, Planner, Action_List
 
 def get_best_plan():
