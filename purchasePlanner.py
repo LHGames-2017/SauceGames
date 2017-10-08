@@ -11,7 +11,7 @@ def get_purchase_brain(Global_map, Player):
 	_is_close_to_shop=False
 	_do_nothing=False
 
-	_purchase_brain = Planner('has_sword', 'has_shield', 'has_bag', 'has_enough_potion', 'has_40000', 'has_enough_ressource', 'is_close_to_shop')
+	_purchase_brain = Planner('has_sword', 'has_shield', 'has_bag', 'has_enough_potion', 'has_40000', 'has_enough_ressource', 'is_close_to_shop', 'do_nothing')
 	_purchase_brain.set_start_state(has_sword=_has_sword, has_shield=_has_shield, has_bag=_has_bag, has_enough_potion=_has_enough_potion, has_40000=_has_40000, has_enough_ressource=_has_enough_ressource, is_close_to_shop=_is_close_to_shop, do_nothing=_do_nothing)
 
 	_purchase_action = Action_List()

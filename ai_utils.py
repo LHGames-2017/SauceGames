@@ -1,5 +1,53 @@
 import numpy
+from structs import *
 from heapq import *
+
+
+def is_resource(cell):
+    return cell.Content == TileContent.Resource
+
+def find_closest_resource(grid, player):
+    closest_so_far = None
+    closest_dist = 100000000
+    for row in grid:
+        for tile in row:
+            tile_pos = Point(tile.X, tile.Y)
+            resource_dist =  Point.Distance(player.Position, tile_pos)
+            if is_resource(tile) and resource_dist < closest_dist:
+                closest_so_far = tile_pos
+                closest_dist = resource_dist
+    return closest_so_far 
+
+def has_reached_goal(player, goal, reached_dist = 0):
+    return Point.Distance(player.Position, goal) == reached_dist
+
+def find_next_pos(player, goal):
+    weights = global_map.get_weights()
+    # print 'Weights: ' + str(weights)
+
+    if player.Position == goal:
+        return goal
+
+    start = (player.Position.X, player.Position.Y)
+    goal = (goal.X, goal.Y)
+
+    path = a_star(weights, start, goal)
+    # print 'Path: ' + str(path)
+
+    # No path found
+    if not path:
+        return player.Position
+
+    # Already there
+    if len(path) == 0:
+        return goal
+
+    next_pos = Point(path[-1][0], path[-1][1])
+    return next_pos
+
+def needs_resource(player):
+    return player.CarriedRessources != player.CarryingCapacity
+
 
 def _heuristic(a, b):
     return (b[0] - a[0]) ** 2 + (b[1] - a[1]) ** 2

@@ -27,8 +27,8 @@ def get_combat_brain(Global_map, Player, Other_players):
 	_combat_actions.add_condition('go_to_ennemis', is_close_to_ennemis=False)
 	_combat_actions.add_reaction('go_to_ennemis',  is_close_to_ennemis=True)
 
-	_combat_action.set_weight('attack', 30)
-	_combat_action.set_weight('do_nothing', 1000)
+	_combat_actions.set_weight('attack', 30)
+	_combat_actions.set_weight('do_nothing', 1000)
 
 	_combat_brain.set_action_list(_combat_actions)
 

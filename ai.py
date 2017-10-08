@@ -1,7 +1,7 @@
 from flask import Flask, request
 from structs import *
 from map_utils import GlobalMap
-from ai_utils import a_star
+from ai_utils import *
 from planner import *
 import json
 import numpy
@@ -52,50 +52,6 @@ def deserialize_map(serialized_map):
 
     return deserialized_map
 
-def is_resource(cell):
-    return cell.Content == TileContent.Resource
-
-def find_closest_resource(grid, player):
-    closest_so_far = None
-    closest_dist = 100000000
-    for row in grid:
-        for tile in row:
-            tile_pos = Point(tile.X, tile.Y)
-            resource_dist =  Point.Distance(player.Position, tile_pos)
-            if is_resource(tile) and resource_dist < closest_dist:
-                closest_so_far = tile_pos
-                closest_dist = resource_dist
-    return closest_so_far 
-
-def has_reached_goal(player, goal, reached_dist = 0):
-    return Point.Distance(player.Position, goal) == reached_dist
-
-def find_next_pos(player, goal):
-    weights = global_map.get_weights()
-    # print 'Weights: ' + str(weights)
-
-    if player.Position == goal:
-        return goal
-
-    start = (player.Position.X, player.Position.Y)
-    goal = (goal.X, goal.Y)
-
-    path = a_star(weights, start, goal)
-    # print 'Path: ' + str(path)
-
-    # No path found
-    if not path:
-        return player.Position
-
-    # Already there
-    if len(path) == 0:
-        return goal
-
-    next_pos = Point(path[-1][0], path[-1][1])
-    return next_pos
-
-def needs_resource(player):
-    return player.CarriedRessources != player.CarryingCapacity
 
 def bot():
     """
@@ -135,26 +91,26 @@ def bot():
     global_map.update_grid(deserialized_map)
     # print str(global_map)
 
-    # print str(player)
+    print str(player)
 
-    best_plan = get_best_plan(global_map, player, otherPlayers)
-
+    best_plan = get_best_plan(deserialized_map, player, otherPlayers)
+    print best_plan
+    
+    closest_resource = find_closest_resource(global_map, player)
     action = None
-    if best_plan == 'collect':
-        goal = find_closest_resource(deserialized_map, player)
-        # print 'Target: ' + str(goal)
-        if not has_reached_goal(player, goal, 1):
-            next_pos = find_next_pos(player, goal)
+    if best_plan == 'go_to_ressources':
+            next_pos = find_next_pos(player, closest_resource)
             # print 'Next pos: ' + str(next_pos) 
             action = create_move_action(next_pos)
-        else:
-            action = create_collect_action(goal)
+    
+    elif best_plan == 'collect':
+            action = create_collect_action(closest_resource)
+
     elif best_plan == 'go_to_house':    
         next_pos = find_next_pos(player, player.HouseLocation)
         action = create_move_action(next_pos)
 
     
-    print best_plan
             
     # return decision
     return action
@@ -171,4 +127,4 @@ def reponse():
 if __name__ == "__main__":
     global global_map
     global_map = GlobalMap()
-    app.run(host="0.0.0.0", port=3000, debug=True)
+    app.run(host="0.0.0.0", port=8080, debug=True)
