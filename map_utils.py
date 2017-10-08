@@ -4,9 +4,9 @@ from structs import *
 class GlobalMap:
     def __init__(self):
         self.grid = []
-        for i in range(100):
+        for i in range(1000):
             self.grid.append([])
-            for j in range(100):
+            for j in range(1000):
                 self.grid[i].append(None)
 
     def __str__(self):
